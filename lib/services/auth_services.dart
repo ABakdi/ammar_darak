@@ -22,7 +22,7 @@ class AuthService {
       User user = User(
         id: '',
         name: name,
-        password: password,
+        password: password, 
         email: email,
         token: '',
       );
