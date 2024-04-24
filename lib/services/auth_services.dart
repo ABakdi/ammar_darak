@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ammar_darak/models/user.dart';
 import 'package:ammar_darak/providers/user_provider.dart';
 import 'package:ammar_darak/screens/home_screen.dart';
-import 'package:ammar_darak/screens/signup_screen.dart';
+import 'package:ammar_darak/screens/login_screen.dart';
 import 'package:ammar_darak/utils/constants.dart';
 import 'package:ammar_darak/utils/utils.dart';
 import 'package:http/http.dart' as http;
@@ -16,20 +16,24 @@ class AuthService {
     required BuildContext context,
     required String email,
     required String password,
+    required String repeatPassword,
     required String name,
   }) async {
     try {
-      User user = User(
-        id: '',
-        name: name,
-        password: password, 
-        email: email,
-        token: '',
-      );
+      Map<String, String> body = {
+        'name': name,
+        'email': email,
+        'password1': password,
+        'password2': repeatPassword
+      };
+
+      print(json.encode(body));
+
+      print('${Constants.uri}/api/signup');
 
       http.Response res = await http.post(
-        Uri.parse('${Constants.uri}/api/signup'),
-        body: user.toJson(),
+        Uri.parse('${Constants.uri}/api/auth/signup'),
+        body: json.encode(body),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -41,7 +45,7 @@ class AuthService {
         onSuccess: () {
           showSnackBar(
             context,
-            'Account created! Login with the same credentials!',
+            'Account created! Check out your email for verification',
           );
         },
       );
@@ -52,29 +56,31 @@ class AuthService {
 
   void signInUser({
     required BuildContext context,
-    required String email,
+    required String emailOrUsername,
     required String password,
   }) async {
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       final navigator = Navigator.of(context);
       http.Response res = await http.post(
-        Uri.parse('${Constants.uri}/api/signin'),
+        Uri.parse('${Constants.uri}/api/auth/signin'),
         body: jsonEncode({
-          'email': email,
+          'emailOrUsername': emailOrUsername,
           'password': password,
         }),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      print(res);
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           userProvider.setUser(res.body);
-          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
+          await prefs.setString(
+              'x-auth-token', jsonDecode(res.body)['accessToken']);
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const HomeScreen(),
@@ -114,7 +120,10 @@ class AuthService {
       if (response == true) {
         http.Response userRes = await http.get(
           Uri.parse('${Constants.uri}/'),
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'x-auth-token': token},
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': token
+          },
         );
 
         userProvider.setUser(userRes.body);
@@ -130,7 +139,7 @@ class AuthService {
     prefs.setString('x-auth-token', '');
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => const SignupScreen(),
+        builder: (context) => const LoginScreen(),
       ),
       (route) => false,
     );
