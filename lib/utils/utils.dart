@@ -15,15 +15,19 @@ void httpErrorHandle({
   required BuildContext context,
   required VoidCallback onSuccess,
 }) {
+  print(response.body);
   switch (response.statusCode) {
-    case 200:
+    case 200 || 201:
       onSuccess();
       break;
     case 400:
-      showSnackBar(context, jsonDecode(response.body)['msg']);
+      showSnackBar(context, jsonDecode(response.body)["message"][0]);
+      break;
+    case 401 || 409:
+      showSnackBar(context, jsonDecode(response.body)["message"]);
       break;
     case 500:
-      showSnackBar(context, jsonDecode(response.body)['error']);
+      showSnackBar(context, jsonDecode(response.body).toString());
       break;
     default:
       showSnackBar(context, response.body);
