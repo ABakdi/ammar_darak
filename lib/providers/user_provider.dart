@@ -4,10 +4,13 @@ import 'package:ammar_darak/models/user.dart';
 class UserProvider extends ChangeNotifier {
   User _user = User(
     id: '',
-    name: '',
     email: '',
+    name: '',
+    username: '',
+    confirmed: false,
+    createdAt: '',
+    updatedAt: '',
     token: '',
-    password: '',
   );
 
   User get user => _user;
