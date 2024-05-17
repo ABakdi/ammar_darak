@@ -33,3 +33,15 @@ void httpErrorHandle({
       showSnackBar(context, response.body);
   }
 }
+
+String formatNumber(int likes) {
+  if (likes < 1000) {
+    return '$likes';
+  } else if (likes < 1000000) {
+    double k = likes / 1000;
+    return '${k.toStringAsFixed(k.truncateToDouble() == k ? 0 : 1)}K';
+  } else {
+    double m = likes / 1000000;
+    return '${m.toStringAsFixed(m.truncateToDouble() == m ? 0 : 1)}M';
+  }
+}
