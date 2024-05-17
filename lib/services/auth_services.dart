@@ -27,10 +27,6 @@ class AuthService {
         'password2': repeatPassword
       };
 
-      print(json.encode(body));
-
-      print('${Constants.uri}/api/signup');
-
       http.Response res = await http.post(
         Uri.parse('${Constants.uri}/api/auth/signup'),
         body: json.encode(body),
@@ -72,13 +68,15 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print(res);
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          userProvider.setUser(res.body);
+          var responseMap = jsonDecode(res.body);
+          responseMap['user']['accessToken'] = responseMap['accessToken'];
+          var userData = jsonEncode(responseMap['user']);
+          userProvider.setUser(userData);
           await prefs.setString(
               'x-auth-token', jsonDecode(res.body)['accessToken']);
           navigator.pushAndRemoveUntil(
@@ -144,4 +142,6 @@ class AuthService {
       (route) => false,
     );
   }
+
+  void refreshToken(BuildContext context) async {}
 }
