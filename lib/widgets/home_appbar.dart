@@ -16,19 +16,19 @@ class HomeAppBar extends StatelessWidget {
           onPressed: () {},
           style: IconButton.styleFrom(
             backgroundColor: Constants.kcontentColor,
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(1),
           ),
-          iconSize: 30,
-          icon: const Icon(Ionicons.grid_outline),
+          iconSize: 20,
+          icon: const Icon(Ionicons.person_outline),
         ),
         IconButton(
           onPressed: () {},
           style: IconButton.styleFrom(
             backgroundColor: Constants.kcontentColor,
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(1),
           ),
-          iconSize: 30,
-          icon: const Icon(Ionicons.notifications_outline),
+          iconSize: 20,
+          icon: const Icon(Ionicons.cart_outline),
         ),
       ],
     );
