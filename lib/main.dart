@@ -1,3 +1,4 @@
+import 'package:ammar_darak/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ammar_darak/providers/user_provider.dart';
 import 'package:ammar_darak/screens/home_screen.dart';
@@ -39,10 +40,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: /*Provider.of<UserProvider>(context).user.token.isEmpty
-          ? const SignupScreen()
-          : const*/
-          HomeScreen(),
+      home: Provider.of<UserProvider>(context).user.token.isEmpty
+          ? const LoginScreen()
+          : const HomeScreen(),
     );
   }
 }
