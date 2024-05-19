@@ -1,5 +1,6 @@
 import 'package:ammar_darak/models/product.dart';
 import 'package:ammar_darak/models/review.dart';
+import 'package:ammar_darak/models/store.dart';
 import 'package:ammar_darak/models/user.dart';
 import 'package:ammar_darak/providers/user_provider.dart';
 import 'package:ammar_darak/services/auth_services.dart';
@@ -8,7 +9,9 @@ import 'package:ammar_darak/widgets/home_appbar.dart';
 import 'package:ammar_darak/widgets/image_slider.dart';
 import 'package:ammar_darak/widgets/product_card.dart';
 import 'package:ammar_darak/widgets/product_detail.dart';
+import 'package:ammar_darak/widgets/products_list.dart';
 import 'package:ammar_darak/widgets/review_card.dart';
+import 'package:ammar_darak/widgets/reviews_list.dart';
 import 'package:ammar_darak/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     likeCount: 232804,
     reviewCount: 345,
     averageRating: 4,
+    userReview: null,
   );
 
   List<Review> reviews = List<Review>.from([
@@ -99,29 +103,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Constants.kscaffoldColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HomeAppBar(),
-                //const SizedBox(height: 20),
-                //const SearchField(),
-                const SizedBox(height: 20),
-                //ProductCard(product: product),
-                ProductDetails(product: product, review: reviews),
-                const SizedBox(height: 20),
-                ReviewCard(
-                  reviewCartType: ReviewCartType.show,
-                  review: reviews[0],
-                  product: product,
-                ),
-                const SizedBox(height: 20),
-                //const Categories(),
-                const SizedBox(height: 25),
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HomeAppBar(),
+              //const SizedBox(height: 20),
+              const SearchField(),
+              //const SizedBox(height: 20),
+              //ProductCard(product: product),
+              //ProductDetails(product: product, review: reviews),
+              const SizedBox(height: 20),
+              // ReviewCard(
+              //   reviewCartType: ReviewCartType.create,
+              //   review: reviews[1],
+              //   product: product,
+              // ),
+              ProductsList(storeId: 4),
+              //const SizedBox(height: 20),
+              //ReviewsList(product: product, store: null),
+              //const SizedBox(height: 25),
+            ],
           ),
         ),
       ),
