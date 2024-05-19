@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:ammar_darak/models/review.dart';
+import 'package:ammar_darak/models/user.dart';
+
 class Product {
   final int id;
   final String name;
@@ -16,6 +19,7 @@ class Product {
   final int? likeCount;
   final int? reviewCount;
   final double? averageRating;
+  final Review? userReview;
 
   Product({
     required this.id,
@@ -34,6 +38,7 @@ class Product {
     required this.likeCount,
     required this.reviewCount,
     required this.averageRating,
+    required this.userReview,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -54,6 +59,7 @@ class Product {
       likeCount: likeCount,
       reviewCount: reviewCount,
       averageRating: averageRating,
+      userReview: userReview,
     };
   }
 
@@ -75,6 +81,8 @@ class Product {
       likeCount: map['likeCount']?.toInt() ?? 0,
       reviewCount: map['reviewCount']?.toInt() ?? 0,
       averageRating: map['averageRating']?.toDouble() ?? 0,
+      userReview:
+          map['userReview'] != null ? Review.fromMap(map['userReview']) : null,
     );
   }
 
